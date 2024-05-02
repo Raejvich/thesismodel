@@ -15,6 +15,9 @@ def differences(data):
 
 
 def adf_test(data, tickers):
+    """
+    ADF test to determine which difference to use for stationary data
+    """
     adf_table = pd.DataFrame(index=tickers, columns=['prices_pvalue','dif_pvalue', 'dif2_pvalue','Integration_order'])
 
     # Apply the ADF test to the three time series of each asset
