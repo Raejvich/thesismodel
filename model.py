@@ -1,6 +1,8 @@
 from statsmodels.tsa.api import VAR
 from statsmodels.tsa.stattools import adfuller
 import pandas as pd
+import numpy as np
+
 
 def differences(data):
     """
@@ -37,4 +39,40 @@ def adf_test(data, tickers):
             adf_table.loc[ticker,'Integration_order'] = 2
     adf_table.dropna(inplace=True)
     
-    print(adf_table)
+    return adf_table
+
+
+def create_var_model(data):
+
+    indexes = [
+    "S&P 500",
+    "S&P 500 Communication Services (Sector)",
+    "S&P 500 Consumer Discretionary (Sector)",
+    "S&P 500 Consumer Staples (Sector)",
+    "S&P 500 Energy (Sector)",
+    "S&P 500 Financials (Sector)",
+    "S&P 500 Health Care (Sector)",
+    "S&P 500 Industrials (Sector)",
+    "S&P 500 Information Technology (Sector)",
+    "S&P 500 Materials (Sector)",
+    "S&P 500 Real Estate (Sector)",
+    "S&P 500 Utilities (Sector)"
+    ]
+
+    for index_name in indexes:
+        print("Fitting VAR model for", index_name)
+        # Extract data for the current index
+        index_data = data[[index_name, '1-Month Yield', '1-Year Yield', '10-Year Yield']]
+        
+        # Drop missing values
+        index_data = index_data.dropna()
+        
+        # Create VAR model object
+        model = VAR(index_data)
+        
+        # Fit VAR model
+        results = model.fit(1)
+        
+        # Print estimation summary
+        print(results.summary())
+        
