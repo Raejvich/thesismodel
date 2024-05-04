@@ -30,7 +30,7 @@ def main():
     data = data.drop(columns=['Date'])
     result = m.create_var_model(data)
 
-
+    m.granger_causality_for_indexes1(data, maxlag=1)
 
     return None
 
